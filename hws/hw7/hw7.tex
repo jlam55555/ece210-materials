@@ -1,0 +1,58 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[]{matlab-prettifier}
+\usepackage{multirow}
+
+\definecolor{darkblue}{HTML}{2222cc}
+
+\usepackage{listings}
+\lstset{
+	basicstyle=\ttfamily\color{darkblue}
+}
+
+%\begin{lstlisting}[style=Matlab-editor]
+
+\title{ECE-210-B HW7}
+\author{Instructor: Jonathan Lam}
+\date{Spring 2021}
+
+\begin{document}
+	\maketitle
+	
+	\noindent For each of the following scenarios, you will generate a filter, create magnitude-phase plots for the filter, and apply the filter. First, we will generate a test vector $x$ on which to apply the filters. Let $x$ be the sum of sinusoids of all integer frequencies from 1Hz to 5kHz. Set $t=[0,2]$, using an sampling frequency of 100kHz. I.e.,
+	\begin{equation*}
+		x=\sum_{f=1}^{50000}\sin(2\pi ft),\ \{0\le t\le 2\}
+	\end{equation*}
+	For each filter, follow these steps (you may want to define this in a function so you don't have to repeat this code). Subplots recommended!
+	\begin{enumerate}
+		\item Use the given specifications to produce the lowest-order filter which meets the specs. Either:
+		\begin{enumerate}
+			\item Use \lstinline|filterDesigner| to generate a MATLAB function that returns a filter, and then call the function to create the filter object; or
+			\item Use the functions for designing and estimating the order of specific types of filters (e.g., \lstinline|cheby2ord|, \lstinline|cheby2|) to generate it without \lstinline|filterDesigner|. Make sure all the parameters are correctly specified! Refer to the lecture example.
+		\end{enumerate}
+		
+		\item Apply \lstinline|freqz| on the filter object to produce a frequency-response plot. Similarly to in HW6, don't use this to plot the frequency response: manually plot the frequency response, making sure you follow all the same instructions as in HW6 \#2d.
+		
+		\item Apply the filter to the signal $x$, defined above.
+		
+		\item Plot the Fourier transform of the filtered signal using \lstinline|fft| and \lstinline|plot|. Refer to the lecture examples for the proper way to use FFT and obtain the proper scaling (use one of the two scaling methods mentioned).
+	\end{enumerate}
+	\makebox[\textwidth][c]{
+		\begin{tabular}{r|ccccc}
+			\hline
+			Type & Type & $F_s$ & $A_{pass}$ & $A_{stop}$ & Frequency specs \\
+			\hline\hline
+			Butterworth & HPF & \multirow{4}{30pt}{100kHz} & 5dB & 50dB & $F_{stop}=10\text{kHz},F_{pass}=20\text{kHz}$\\
+			Chebyshev Type I & LPF & & 2dB & 40dB & $F_{stop}=35\text{kHz},F_{pass}=15\text{kHz}$ \\
+			Chebyshev Type II & bandstop & & 5dB & 50dB & $F_{stop}=15\text{kHz},35\text{kHz},F_{pass}=5\text{kHz},45\text{kHz}$ \\
+			Elliptic & bandpass & & 5dB & 50dB & $F_{stop}=15\text{kHz},35\text{kHz},F_{pass}=20\text{kHz},30\text{kHz}$ \\
+			\hline\hline
+		\end{tabular}
+	}
+\end{document}

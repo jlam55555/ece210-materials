@@ -1,0 +1,107 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[]{matlab-prettifier}
+
+\definecolor{darkblue}{HTML}{2222cc}
+
+\usepackage{listings}
+\lstset{
+	basicstyle=\ttfamily\color{darkblue}
+}
+
+\title{ECE-210-B HW6}
+\author{Instructor: Jonathan Lam}
+\date{Spring 2021}
+
+\begin{document}
+	\maketitle
+	
+	\noindent Before we get started, a few quick reminders about homework format:
+	\begin{itemize}
+		\item I didn't emphasize this much before, but place a header at the top of each file. This is just good general coding practice. Some points may be taken off if this is missing in future assignments. E.g., something like the following is fine:
+		\begin{lstlisting}[style=Matlab-editor]
+% ECE210B HW6
+% John Doe
+clc; clear; close all;
+
+%% ... start rest of code here
+		\end{lstlisting}
+		For function files, a comment describing the function in the file is also a good idea.
+		
+		\item You may have to produce a lot of plots, which may become a little repetitive. However, don't get lazy and forget to label axes and title each plot! Labels don't have to be too long, but they should be enough to give an idea of each plot. This is an important skill for any technical report, so it's good to get in the practice now.
+		
+		\item Make sure your code runs without errors before submitting it. E.g., clear your workspace and run all the sections in a row from the top as a last check before submitting it.
+	\end{itemize}
+	(The real HW begins on the next page.)
+
+	\clearpage
+	\noindent This homework deals with digital filters in a low-level sense. You are expected to know a bit about the z-transform, but if you are not in ECE211 Signals and Systems, please contact me separately for some additional information on this homework if you need it. Also consult the extra materials posted in the Teams.
+	\begin{enumerate}
+		\item For this question, you will work with the discrete-time system described by the following transfer function:
+		\begin{equation*}
+			H(z)=\frac{\frac{1}{2}+\frac{2}{3}z+\frac{3}{7}z^2}{3+\frac{1}{3}z+\frac{1}{2}z^3}
+		\end{equation*}
+		\begin{enumerate}
+			\item Store the transfer function in coefficient vectors \lstinline|b| and \lstinline|a| for the numerator and denominator, respectively.
+			
+			Be \textbf{very} careful setting this up. See \lstinline|help zplane| to see the format that \lstinline|zplane| expects the polynomial functions to be in. (Hint: you may need to left-pad one of \lstinline|a| or \lstinline|b| with zero(s).)
+			
+			\item Plot the poles and zeros of this system using a MATLAB function and the transfer function coefficients.
+			
+			\textit{(For those taking ECE211.)} List the ROCs (regions of convergence) and for each state if it is causal and/or stable.
+			
+			\item Compute the poles and zeros of this system using a MATLAB function. (Make sure to choose the one for discrete systems, not for continuous-time systems.) Do these poles and zeros match what you saw in the previous question?
+			
+			\textit{(Optional.)} Calculate the poles and zeros by hand and verify once again that these are correct.
+			
+			\item Compute the first 32 samples of the impulse response of this transfer function using a MATLAB function and save this to a variable \lstinline|h|.
+			
+			\item Generate a 64-length vector $x[n]=\left(-\frac{5}{6}\right)^n$, $0\le n<64$. This is an arbitrary discrete-time signal. Show the result of applying the filter with transfer function $H(z)$ to this signal by:
+			\begin{enumerate}
+				\item Using \lstinline|filter|.
+				\item Convolution in the time-domain with the impulse response.
+				\item \textit{(Optional.)} Multiplication in the z-domain. Show your work.
+				
+				(Note that you can use \lstinline|impz| to take inverse Z-transform of a rational function.)
+			\end{enumerate}
+			Do your output signals match? (Note that \lstinline|conv| will produce a vector of different length than $x$ -- this is inconsequential and you can truncate it to the correct length.)
+		\end{enumerate}
+	
+		\clearpage
+		\item We're going to be exploring a filter by placing its poles and zeros in specific locations. Last question you converted a system description from its transfer function (tf form) to its zeros and poles (zp(k) form). Now we will do the opposite.
+		\begin{enumerate}
+			\item Compute numerator and denominator vectors for a transfer function with $k=0.01$ and these poles and zeros:
+			
+			Poles: $\exp(\pm2.056j)$, $\exp(\pm1.4261j)$
+			
+			Zeros: $0.7375\exp(\pm0.7601j)$, $0.9589\exp(\pm1.2360j)$
+			
+			\item Create a pole-zero plot using the numerator and denominator vectors and a MATLAB function.
+			
+			\item Use \lstinline|freqz| as shown in lecture to find the frequency response of this filter. This will return two vectors: $H$ (complex frequency response vector) and $\omega$ (digital frequencies corresponding to $H$).
+			
+			Do not use the default plot created by \lstinline|freqz| -- you will be manually creating the plot. (The default plot is shown if you do not use the return value of \lstinline|freqz|, so make sure to save the values \lstinline|[H, w]| for the next question.)
+			
+			\item $H$ is complex: it has a magnitude and a phase. Plot these in two subplots similar to what was shown in lecture. Make sure to:
+			\begin{itemize}
+				\item Convert the magnitude gain (magnitude of $H$) in decibels and label accordingly.
+				\item Plot the delay (phase of $H$) in degrees. Use \lstinline|unwrap| to make it look nicer.
+				
+				(Note that for this particular filter, there are jagged edges even with \lstinline|unwrap| because it is a sharp filter. However, without unwrap you get some additional unwanted jagged edges.)
+				\item Show units in axis labels. (Remember that the frequency vector $w$ is in digital units of radians, not radians per second.)
+				\item Remember that the frequency vector $w$ goes only from $0$ to $\pi$. Properly scale and limit and label the x-axis using \lstinline|xlim|, \lstinline|xticks|, and \lstinline|xticklabels|.
+			\end{itemize}
+		
+			\item Using the information from the frequency response, what kind of filter is this (high/low/band-pass)? Can you see this from the pole-zero plot as well?
+			
+			\item \textit{(Optional.)} Choose a sampling frequency $f_s$ and sample sinusoids at $f\in\{0.1f_s/2,0.5f_s/2,0.9f_s/2\}$ and see that this indeed attenuates frequencies as you expect.
+		\end{enumerate}
+	\end{enumerate}
+	
+\end{document}

@@ -1,0 +1,67 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\definecolor{darkblue}{HTML}{2222cc}
+
+\usepackage{listings}
+\lstset{
+	basicstyle=\ttfamily\color{darkblue}
+}
+
+\title{ECE-210-B HW5}
+\author{Instructor: Jonathan Lam}
+\date{Spring 2021}
+
+\begin{document}
+	\maketitle
+	
+	\noindent We will review some of the advanced data types in MATLAB, such as cell arrays, classes, chars, as well as dataset importing in MATLAB. You will be importing in the fisheriris dataset and encapsulating it in classes.
+	
+	\begin{enumerate}
+		\item Take a minute to research the \href{https://en.wikipedia.org/wiki/Iris_flower_data_set}{fisheriris dataset} (it's a popular dataset, you might see it again in an ML class).
+		
+		Load in the fisheriris dataset with \lstinline|load fisheriris|. You should obtain (in your workspace) a $150\times 4$ matrix called \lstinline|meas|, as well as a $150\times 1$ cell array called \lstinline|species|. The $i$-th row in \lstinline|species| corresponds to the $i$-th row in \lstinline|meas|.
+		
+		\begin{enumerate}
+			\item Create a class \lstinline|Flower| in its own file. (Look up the syntax for user-defined classes!) You should have the following properties:
+			\begin{table}[h]
+				\centering
+				\begin{tabular}{l|l}
+					Property                & Type   \\ \hline
+					\lstinline|petalWidth|  & double \\
+					\lstinline|petalLength| & double \\
+					\lstinline|sepalWidth|  & double \\
+					\lstinline|sepalLength| & double \\
+					\lstinline|species|     & char (array)
+				\end{tabular}
+			\end{table}
+		
+			Note that you do not need to specify the data type of the properties when you are declaring a class; the following properties are just here to impress on you what type of properties you would be expecting.
+			
+			\item Create a constructor for \lstinline|Flower|. It should take in four doubles and a character array corresponding, in order, to the five properties of your class.
+			
+			\clearpage
+			\item Now, import the entries from from \lstinline|meas| and \lstinline|species| into a $150\times 1$ cell array of \lstinline|Flower| instances. You can use a \lstinline|for| loop to import the entries, or look up a way to vectorize the initialization (although the vectorization may take a few extra lines in this case).
+			
+			Note that the name of the species are stored in a cell array; make sure to extract the character array from the cell before storing them in the \lstinline|Flower| instances.
+			
+			\item Create a method \lstinline|getSWidth| in the \lstinline|Flower| class that returns the sepal length of the object. Use this on the 51st \lstinline|Flower| in your cell array, and verify that it is the correct value against the corresponding entry in \lstinline|meas| (i.e., using \lstinline|==|). 
+			
+			\item Create another method called \lstinline|report| in the \lstinline[]|Flower| class that will print out details about the object on the command window. This function takes no arguments and returns nothing. It should print out a statement of the following form, but with the correct values of the object's properties:
+			\begin{lstlisting}[basicstyle=\ttfamily\color{black}]
+The length and width of its sepal are 5.1cm and
+3.5cm respectively, while the length and width
+of its petal are 1.4cm and 0.2cm respectively.
+It belongs to the setosa species.
+			\end{lstlisting}
+			Demonstrate that this function works on the 51st \lstinline|Flower| object.
+		\end{enumerate}
+	\end{enumerate}
+	
+\end{document}

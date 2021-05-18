@@ -1,0 +1,85 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{textcomp}
+
+\usepackage{listings}
+\lstset{
+	basicstyle=\ttfamily\color{olive}
+}
+
+\title{ECE-210-B HW2}
+\author{Instructor: Jonathan Lam}
+\date{Spring 2021}
+
+\begin{document}
+	\maketitle
+	
+	\noindent This homework will review numerical integration and differentiation using vectorized operations, some plotting operations. Remember the style guidelines from the previous assignment. For each question, either save the result to a variable or print out the result to the screen (don't suppress the result).
+	
+	\begin{enumerate}
+		\item
+		Now it's your turn to try out numerical integration and differentiation.
+		\begin{enumerate}
+			\item Create two vectors of length 100 and 1000, each containing evenly spaced samples of the function $g(t)=(1+t)^{-1}$ for $0\le t\le 2\pi$.
+			
+			\item Approximate the derivatives of the vectors using the difference quotient method (i.e., use \lstinline|diff| to take the difference between adjacent verbs and divide elementwise by $\Delta t$). (This will give you vectors of length 99 and 999). Call these numerical estimates $\hat{g}'(t)$.
+			
+			\item Find the analytical derivative $g'(t)$ by hand, and evaluate $g'$ over the same intervals of $t$. (This will give you vectors of length 100 and 1000; truncate them to their first 99 and 999 elements, respectively).
+			
+			\item Say we define the error of the estimate of the derivative to be a normalized mean-square error:
+			\begin{equation*}
+				\epsilon(g',\hat{g}')=\frac{1}{N}\sum_{t} (g'(t)-\hat{g}'(t))^2
+			\end{equation*}
+			where $N$ is the number of samples (99 or 999). Calculate the error for both estimates for the derivative -- which is smaller?
+			
+			\item Approximate the integrals of your original vectors using \lstinline|cumtrapz| and \lstinline|cumsum|. This will give you four approximations of the integral of $g$. These will be length 100 and 1000, so you do not have to perform truncation. Repeat the steps in parts (c) and (d): find the analytical antiderivative, evaluate it at the same $t$ points, and calculate the error estimates for each of the four estimates of the integral.
+			
+			\item Plot the best estimate for the integral. Title your plot.
+			
+			\item \textit{(Optional)} Explore the plotting API: Give the horizontal and vertical axes a label. Turn the grid on/off. Change the axis ticks. Subplots! This is useful for writing reports for your classes, and these plotting functions are closely mirrored by Python's matplotlib library.
+			
+			\item \textit{(Optional)} Integrate using Simpson's rule and compare results.
+		\end{enumerate}
+		
+		\clearpage
+		\item Perform the following matrix operations (without \lstinline|for| loops). Save each result to a separate variable (i.e., don't alter $A$ after creating it).
+		\begin{enumerate}
+			\item Generate the matrix:
+			\begin{equation*}
+				A=\begin{bmatrix}
+				10^{0} & 10^{1} & \dots & 10^{4} \\
+				10^{5} & 10^6 & \dots & 10^9 \\
+				\vdots & \vdots & \ddots & \vdots \\
+				10^{45} & 10^{46} & \dots & 10^{49}
+				\end{bmatrix}\in M_{10\times 5}(\mathbb{R})
+			\end{equation*}
+			(Hint: use \lstinline|logspace| and \lstinline|reshape|.)
+			
+			\item Flip the third row of $A$ left to right.
+			
+			\item Create a column vector of the geometric means of each row. (Recall that the geometric mean of $x_1,x_2,\dots,x_n$ is $\sqrt[n]{x_1x_2\dots x_n}$. The \lstinline|prod| function will probably be helpful.)
+			
+			\item Create the submatrix $B\in M_{3\times 3}(\mathbb{R})$ such that $b_{ij}=a_{(i+5)(j+1)}$.
+			
+			\item Delete rows 5-10 of $A$. (Do this in at most five operations.)
+		\end{enumerate}
+		
+		\item Create a matrix $C\in M_{1000\times 1000}(\mathbb{R})$ such that $c_{ij}=2i^4/(3j+2)$, using each of the following methods. Time each method using \lstinline|tic|/\lstinline|toc| and write a comment on whether you think the times make sense.
+		\begin{enumerate}
+			\item Using \lstinline|for| loops and no pre-allocation.
+			\item Using \lstinline|for| loops and pre-allocation.
+			\item Using (\lstinline|meshgrid| or \lstinline|repmat|) and elementwise matrix operations.
+			\item Using broadcasting.
+		\end{enumerate}
+	
+		(\textit{Caution!} Make sure you clear the variables before running this, especially the matrices in (a) and (b) to show the effect of allocation. E.g., if the four matrices created in this section are called \lstinline|C1|, \lstinline|C2|, \lstinline|C3|, and \lstinline|C4|, make sure to do something like \lstinline|clear C*| before running your code for this question. If you don't clear your variables and you re-run your code, then you will have pre-allocated the matrix for part (a).)
+		
+		\item \textit{(Optional)} Try these problems using Python and numpy.
+		
+		\item \textit{(Optional)} How does vectorization work (in MATLAB or in general)? Do a little research and write a few sentences explaining in your own words how it achieves speedup over \lstinline|for| loops.
+	\end{enumerate}
+	
+\end{document}

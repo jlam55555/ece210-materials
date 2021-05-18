@@ -1,0 +1,54 @@
+\documentclass{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{hyperref}
+%\usepackage[]{matlab-prettifier}
+%\usepackage{multirow}
+
+\definecolor{darkblue}{HTML}{2222cc}
+
+\usepackage{listings}
+\lstset{
+	basicstyle=\ttfamily\color{darkblue}
+}
+
+%\begin{lstlisting}[style=Matlab-editor]
+
+\title{ECE-210-B HW9}
+\author{Instructor: Jonathan Lam}
+\date{Spring 2021}
+
+\begin{document}
+	\maketitle
+	
+	\noindent In this (final) problem set, you will review the symbolic toolbox and create a simple app using the app designer.
+	
+	\begin{enumerate}
+		\item Consider the system of differential equations:
+		\begin{gather*}
+			\frac{dx}{dt}=y\\
+			\frac{dy}{dt}=-x-y
+		\end{gather*}
+		Solve the system using the symbolic toolbox's \lstinline|dsolve| function using four different initial conditions (so you should have four sets of solutions):
+		\begin{gather*}
+			x(0)=-1,\ y(0)=1\\
+			x(0)=1,\ y(0)=1\\
+			x(0)=-1,\ y(0)=-1\\
+			x(0)=1,\ y(0)=-1
+		\end{gather*}
+		Then plot all four parametric curves ($x(t),y(t)$) on the same plot on $t=[0\ 100]$ using \lstinline|fplot|. This should generate four spirals. Use a legend.
+		
+		\item Consider the following experiment: You roll $M$ $D$-sided fair die, and count the sum of all the die values.
+		
+		You are going to build an app using \lstinline|appdesigner| that displays a histogram of the resulting sums. There should be input boxes to control the simulation, a button to run the simulation, and a plot plane (\lstinline|UIAxes|) to plot the histogram. You will need three input boxes: one for $M$, one for $D$, and one for the number of simulations to run, $N$. Make each bin width 1, and normalize the counts (see the histogram \lstinline|"BinWidth"| and \lstinline|"Normalization"| options). (You can assume that the input is valid.)
+		
+		For submission, export the app to a .m file by clicking Save $>$ Export to .m File, and make sure you can run it like you would a normal function. (E.g., if you export your app to \lstinline|dice_sim.m|, you should be able to call it by running \lstinline|dice_sim|.)
+		
+		(As $M$ increases, the distribution becomes more normal -- this is a demonstration of the Central Limit Theorem.)
+	\end{enumerate}
+	
+\end{document}
